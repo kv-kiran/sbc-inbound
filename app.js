@@ -15,6 +15,8 @@ assert.ok(process.env.JAMBONES_TIME_SERIES_HOST, 'missing JAMBONES_TIME_SERIES_H
 assert.ok(process.env.JAMBONES_NETWORK_CIDR || process.env.K8S, 'missing JAMBONES_NETWORK_CIDR env var');
 
 const Srf = require('drachtio-srf');
+const {installDigestUriFix} = require('./lib/refer-digest-uri');
+installDigestUriFix();
 const srf = new Srf('sbc-inbound');
 const opts = Object.assign({
   timestamp: () => {return `, "time": "${new Date().toISOString()}"`;}
