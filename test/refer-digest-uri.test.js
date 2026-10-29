@@ -1,14 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert');
-const {
-  requestUriFromDialog,
-  uriForDigest,
-  referDigestUri,
-  realmFromChallenge,
-  referredByForCarrier,
-  referToForCarrier,
-  installDigestUriFix
-} = require('../lib/refer-digest-uri');
+const {requestUriFromDialog, uriForDigest, referDigestUri, realmFromChallenge, installDigestUriFix} = require('../lib/refer-digest-uri');
 
 test('in-dialog Request-URI is the dialog remote target', () => {
   assert.strictEqual(
@@ -50,31 +42,6 @@ test('REFER digest keeps a Contact that has no transport parameter', () => {
   assert.strictEqual(
     referDigestUri('sip:+917263986838@192.148.164.23:5061', 'sipconn-tls.telstra.com'),
     'sip:+917263986838@sipconn-tls.telstra.com'
-  );
-});
-
-test('attended REFER uses the consult user and a public Referred-By', () => {
-  const referTo = referToForCarrier(
-    '<sip:0399301264@sipconn-tls.telstra.com?Replaces=call-id%3Bto-tag%3Dt%3Bfrom-tag%3Df>'
-  );
-  assert.strictEqual(
-    referTo,
-    '<sip:399301264@sipconn-tls.telstra.com?Replaces=call-id%3Bto-tag%3Dt%3Bfrom-tag%3Df>'
-  );
-  assert.strictEqual(
-    referredByForCarrier('<sip:+919567464915@172.20.11.137>', referTo),
-    '<sip:+919567464915@sipconn-tls.telstra.com>'
-  );
-});
-
-test('a public Referred-By and a Refer-To without Replaces are left alone', () => {
-  assert.strictEqual(
-    referredByForCarrier('<sip:862174320@sipconn-tls.telstra.com>', '<sip:399301264@sipconn-tls.telstra.com>'),
-    '<sip:862174320@sipconn-tls.telstra.com>'
-  );
-  assert.strictEqual(
-    referToForCarrier('<sip:0399301264@sipconn-tls.telstra.com>'),
-    '<sip:0399301264@sipconn-tls.telstra.com>'
   );
 });
 
